@@ -7,6 +7,7 @@ import shutil
 import datetime
 import exifread
 import hashlib
+import argparse
 
 
 def fhash(filepath):
@@ -44,7 +45,14 @@ def check_containing(name):
 
 
 if __name__ == "__main__":
-    targetdir = os.path.expanduser("~/Pictures/Australia")
+    parser = argparse.ArgumentParser(description='Params for the picsorter.')
+    parser.add_argument('--target', help="Target folder")
+    args = parser.parse_args()
+    if args.target:
+        targetdir = args.target
+    else:
+        targetdir = os.path.expanduser("~/Pictures/Australia")
+
     names = [y for x in os.walk(".") for y in glob.glob(os.path.join(x[0], '*.jpg'))]
 
     for name in names:
