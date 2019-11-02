@@ -153,9 +153,12 @@ func getDate(picName string) (time.Time, error) {
 
 	var dateTime time.Time
 	tags, err := exif.Decode(f)
+	if tags != nil {
+		dateTime, err = tags.DateTime()
+	}
 	if err != nil {
 		// try to parse the file name
-		r, _ := regexp.Compile(`IMG-\d+-.*\.jpg`)
+		r, _ := regexp.Compile(`IMG-\d+-.*`)
 		if r.MatchString(picName) {
 			r, _ = regexp.Compile(`-\d+-`)
 			possibleDate := strings.Replace(r.FindString(picName), "-", "", -1)
@@ -164,11 +167,6 @@ func getDate(picName string) (time.Time, error) {
 				fmt.Printf("File: %v doesn't have the DateTime field and can't parse the date!\n", picName)
 			}
 			return dateTime, err
-		}
-	} else {
-		dateTime, err = tags.DateTime()
-		if err != nil {
-			return time.Date(1900, time.Month(1), 1, 0, 0, 0, 0, time.UTC), nil
 		}
 	}
 
