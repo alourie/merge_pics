@@ -190,7 +190,7 @@ func moveFiles(i int, collect string, files chan filesData, wg *sync.WaitGroup) 
 	defer wg.Done()
 	for fd := range files {
 		dateTime := fd.date
-		filePath := fmt.Sprintf("%v/%v/%02d/%02d", collect, dateTime.Year(), dateTime.Month(), dateTime.Day())
+		filePath := fmt.Sprintf("%v/%v/%02d/%02d", collect, fd.date.Year(), dateTime.Month(), dateTime.Day())
 		picName := filepath.Join(filePath, filepath.Base(fd.name))
 
 		// move
